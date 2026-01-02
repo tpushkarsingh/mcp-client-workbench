@@ -119,3 +119,4 @@ A minimalistic, responsive UI for interacting with the orchestrator.
 ## 📽️ Demo Highlights
 *   **Zero-Config Tool Discovery**: Add a WASM file, and the LLM knows how to use it instantly.
 *   **Intelligent Chaining**: Ask "Should I go for a run in Bangalore?" -> SLM fetches weather -> SLM calls activity advisor -> User gets a recommendation.
+*   https://www.youtube.com/watch?v=_vD_Ka_IXz4
