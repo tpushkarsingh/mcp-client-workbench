@@ -1,0 +1,21 @@
+{
+  "name": "weather-tool",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "types": "jco types wit --name weather-tool -o src/generated",
+    "bundle": "webpack",
+    "componentize": "jco componentize build/bundled.js -w wit -o dist/weather-tool.wasm --world-name weather-tool",
+    "build": "npm run types && npm run bundle && npm run componentize"
+  },
+  "devDependencies": {
+    "@bytecodealliance/componentize-js": "^0.19.3",
+    "@bytecodealliance/jco": "^1.15.4",
+    "@types/node": "^22.10.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "zod": "^4.2.1"
+  }
+}

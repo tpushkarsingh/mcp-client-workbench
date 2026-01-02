@@ -1,0 +1,7 @@
+package wasmcp:activity-advisor@0.1.0;
+
+/// MCP tools for activity-advisor
+world activity-advisor {
+    /// Export MCP tools interface
+    export wasmcp:mcp-v20250618/tools@0.1.7;
+}

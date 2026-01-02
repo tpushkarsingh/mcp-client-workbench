@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP Workbench Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f8fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+    }
+
+    .messages {
+      min-height: 300px;
+      margin-bottom: 16px;
+    }
+
+    .message {
+      margin: 12px 0;
+    }
+
+    .user {
+      text-align: right;
+      color: #2563eb;
+    }
+
+    .assistant {
+      text-align: left;
+      color: #111;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    input[type=text] {
+      flex: 1;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 4px;
+      background: #2563eb;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #b3c6f7;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="chat-container">
+    <div class="messages" id="messages"></div>
+    <form id="chat-form" class="input-row">
+      <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required />
+      <button type="submit">Send</button>
+      <button type="button" id="clear-btn" style="background: #6e7681;">Clear</button>
+    </form>
+  </div>
+  <script>
+    const messagesDiv = document.getElementById('messages');
+    const chatForm = document.getElementById('chat-form');
+    const userInput = document.getElementById('user-input');
+    const clearBtn = document.getElementById('clear-btn');
+    let chatHistory = [];
+
+    function renderMessages() {
+      messagesDiv.innerHTML = '';
+      chatHistory.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = 'message ' + msg.role;
+        div.textContent = msg.content;
+        messagesDiv.appendChild(div);
+      });
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    clearBtn.onclick = () => {
+      chatHistory = [];
+      renderMessages();
+    };
+
+    chatForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const content = userInput.value.trim();
+      if (!content) return;
+      chatHistory.push({ role: 'user', content });
+      renderMessages();
+      userInput.value = '';
+      chatForm.querySelector('button').disabled = true;
+      try {
+        const response = await fetch('http://localhost:8000/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: chatHistory })
+        });
+        const data = await response.json();
+        chatHistory.push({ role: 'assistant', content: data.content });
+        renderMessages();
+      } catch (err) {
+        chatHistory.push({ role: 'assistant', content: 'Error: Could not reach server.' });
+        renderMessages();
+      }
+      chatForm.querySelector('button').disabled = false;
+    };
+  </script>
+</body>
+
+</html>
