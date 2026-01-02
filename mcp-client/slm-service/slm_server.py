@@ -13,8 +13,9 @@ from llm_client import LLMClient
 
 # Configuration
 REGISTRY_URL = "http://localhost:8002/api/v1/servers"
-# Absolute path to the WASM Runtime script
-RUNTIME_SCRIPT = "/Volumes/PortableSSD/workspaces/mcp/mcp-client/wasm-runtime/run.sh"
+# Path to the WASM Runtime script relative to this file
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+RUNTIME_SCRIPT = os.path.join(SCRIPT_DIR, "..", "wasm-runtime", "run.sh")
 
 # Global State
 mcp_sessions: Dict[str, ClientSession] = {}
